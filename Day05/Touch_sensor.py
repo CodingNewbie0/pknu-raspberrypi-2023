@@ -1,0 +1,33 @@
+# 푸시버튼 예제
+import RPi.GPIO as GPIO
+import time
+
+touch = 24
+count = 0
+red = 17; green = 22; blue = 27
+
+def clickHandler(channel):
+    global count
+    count = count +1
+    if (count % 2 == 0):
+        GPIO.output(red, GPIO.LOW)
+    else:
+        GPIO.output(red, GPIO.HIGH)
+
+    print(count)
+
+GPIO.setwarnings(False) # 경고표시로그 사라짐
+GPIO.setmode(GPIO.BCM)
+GPIO.setup(touch, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)
+GPIO.add_event_detect(touch, GPIO.RISING, callback=clickHandler)
+
+GPIO.setup(red, GPIO.OUT)
+GPIO.setup(green, GPIO.OUT)
+GPIO.setup(blue, GPIO.OUT)
+
+GPIO.output(red, True) 
+GPIO.output(blue, True) 
+GPIO.output(green, True)
+
+while (True):
+    time.sleep(0.01)
